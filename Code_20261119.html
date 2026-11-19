@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>厅堂业务速查通</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", system-ui, sans-serif;
+        }
+        body {
+            background-color: #f7f9fc;
+            color: #333;
+            line-height: 1.6;
+            padding: 16px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .header {
+            background-color: #447cb8;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 15px;
+        }
+        .search-area {
+            padding: 18px 20px;
+            background: #fff;
+            border-bottom: 1px solid #e8edf3;
+        }
+        .search-box {
+            display: flex;
+            gap: 8px;
+        }
+        #searchInput {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #d8e2ee;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .hot-btn-group {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap:8px;
+        }
+        .hot-btn {
+            padding:6px 12px;
+            background:#e8f0fa;
+            border:none;
+            border-radius:20px;
+            color:#447cb8;
+            font-size:14px;
+            cursor:pointer;
+        }
+        .tabs {
+            display: flex;
+            background: #f0f5fb;
+        }
+        .tab-item {
+            flex:1;
+            text-align:center;
+            padding:14px;
+            cursor:pointer;
+            font-size:16px;
+            color:#555;
+            border-bottom:3px solid transparent;
+        }
+        .tab-item.active {
+            color:#447cb8;
+            border-bottom-color:#447cb8;
+            font-weight:600;
+            background:#fff;
+        }
+        .content-wrap {
+            padding:20px;
+        }
+        .business-card {
+            background:#f7f9fc;
+            border-radius:10px;
+            margin-bottom:12px;
+            overflow:hidden;
+        }
+        .card-title {
+            padding:14px 16px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            cursor:pointer;
+        }
+        .card-title span{
+            font-weight:500;
+        }
+        .arrow{
+            transition: transform 0.2s;
+        }
+        .card-body{
+            padding:0 16px;
+            max-height:0;
+            overflow:hidden;
+            transition: all 0.25s ease;
+        }
+        .card-body.open{
+            padding:0 16px 16px;
+            max-height:2000px;
+        }
+        .item-row{
+            display:flex;
+            align-items:center;
+            margin:8px 0;
+        }
+        .dot{
+            width:12px;
+            height:12px;
+            border-radius:50%;
+            margin-right:8px;
+            flex-shrink:0;
+        }
+        .dot-blue{background:#447cb8;}
+        .dot-green{background:#63b970;}
+        .dot-red{background:#e86860;}
+        .dot-yellow{background:#f2b749;}
+        .tip-box{
+            background:#fff6e5;
+            padding:10px 12px;
+            border-radius:8px;
+            margin-top:10px;
+            font-size:14px;
+            color:#946414;
+        }
+        .step-row{
+            display:flex;
+            flex-wrap:wrap;
+            gap:6px;
+            margin:10px 0;
+        }
+        .step-item{
+            padding:6px 10px;
+            background:#e8f0fa;
+            border-radius:6px;
+            font-size:14px;
+        }
+        .hide{
+            display:none !important;
+        }
+        .footer{
+            text-align:center;
+            padding:16px;
+            font-size:13px;
+            color:#888;
+            border-top:1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>厅堂业务速查通</h1>
+            <p>先查再核验，客户少跑腿，等候更省心</p>
+        </div>
+        <div class="search-area">
+            <div class="search-box">
+                <input id="searchInput" placeholder="搜索业务，例如：证书重置、三方存管">
+            </div>
+            <div class="hot-btn-group">
+                <button class="hot-btn" data-key="开户">对公新开户</button>
+                <button class="hot-btn" data-key="证书">证书重置</button>
+                <button class="hot-btn" data-key="三方">三方存管</button>
+            </div>
+        </div>
+        <div class="tabs">
+            <div class="tab-item active" data-tab="account">账户类业务</div>
+            <div class="tab-item" data-tab="settle">结算类业务</div>
+            <div class="tab-item" data-tab="网银">网银证书业务</div>
+        </div>
+        <div class="content-wrap">
+            <!-- 账户类 -->
+            <div class="tab-panel" id="account">
+                <div class="business-card">
+                    <div class="card-title">
+                        <span>对公开户</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="item-row"><span class="dot dot-blue"></span>营业执照原件</div>
+                        <div class="item-row"><span class="dot dot-green"></span>法人身份证复印件</div>
+                        <div class="item-row"><span class="dot dot-red"></span>法人授权书加盖公章</div>
+                        <div class="item-row"><span class="dot dot-yellow"></span>法人无法到场需提供经办人证件</div>
+                        <div class="tip-box">💡温馨提示：资料提前复印齐全，避免客户来回补材料</div>
+                    </div>
+                </div>
+                <div class="business-card">
+                    <div class="card-title">
+                        <span>账户变更</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="item-row"><span class="dot dot-blue"></span>变更证明原件</div>
+                        <div class="item-row"><span class="dot dot-green"></span>经办人身份证复印件</div>
+                        <div class="item-row"><span class="dot dot-red"></span>变更申请表加盖公章</div>
+                        <div class="tip-box">💡温馨提示：名称变更同步需要更新网银信息</div>
+                    </div>
+                </div>
+            </div>
+            <!-- 结算类 -->
+            <div class="tab-panel hide" id="settle">
+                <div class="business-card">
+                    <div class="card-title">
+                        <span>三方存管签约</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="item-row"><span class="dot dot-blue"></span>证券账户信息原件</div>
+                        <div class="item-row"><span class="dot dot-green"></span>法人、经办人复印件</div>
+                        <div class="item-row"><span class="dot dot-red"></span>协议加盖公章</div>
+                        <div class="tip-box">💡温馨提示：确认证券端已预开通，再来银行办理</div>
+                    </div>
+                </div>
+                <div class="business-card">
+                    <div class="card-title">
+                        <span>代发工资</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="item-row"><span class="dot dot-green"></span>员工清单复印件</div>
+                        <div class="item-row"><span class="dot dot-red"></span>代发协议加盖公章</div>
+                        <div class="tip-box">💡温馨提示：清单格式按照模板整理，避免导入失败</div>
+                    </div>
+                </div>
+            </div>
+            <!-- 网银证书 -->
+            <div class="tab-panel hide" id="网银">
+                <div class="business-card">
+                    <div class="card-title">
+                        <span>新开户网银激活</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="step-row">
+                            <span class="step-item">①登录企业网银</span>
+                            <span class="step-item">②录入经办人信息</span>
+                            <span class="step-item">③下载证书</span>
+                            <span class="step-item">④设置密码激活</span>
+                        </div>
+                        <div class="tip-box">💡温馨提示：证书下载后妥善保存，及时告知客户密码保管要求</div>
+                    </div>
+                </div>
+                <div class="business-card">
+                    <div class="card-title">
+                        <span>证书过期重置激活</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="step-row">
+                            <span class="step-item">①提交重置申请</span>
+                            <span class="step-item">②核验身份资料</span>
+                            <span class="step-item">③获取新证书码</span>
+                            <span class="step-item">④重新下载激活</span>
+                        </div>
+                        <div class="tip-box">💡温馨提示：过期太久无法线上续期，需要临柜办理</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            厅堂业务速查通｜版本更新：按需维护业务规则
+        </div>
+    </div>
+    <script>
+        //标签切换
+        const tabs = document.querySelectorAll('.tab-item');
+        const panels = document.querySelectorAll('.tab-panel');
+        tabs.forEach(tab=>{
+            tab.onclick = ()=>{
+                tabs.forEach(t=>t.classList.remove('active'));
+                tab.classList.add('active');
+                const targetId = tab.dataset.tab;
+                panels.forEach(p=>{
+                    if(p.id === targetId) p.classList.remove('hide');
+                    else p.classList.add('hide');
+                })
+            }
+        })
+        //展开收起卡片
+        const cards = document.querySelectorAll('.card-title');
+        cards.forEach(card=>{
+            card.onclick = ()=>{
+                const body = card.nextElementSibling;
+                const arrow = card.querySelector('.arrow');
+                body.classList.toggle('open');
+                arrow.textContent = body.classList.contains('open') ? '▲' : '▼';
+            }
+        })
+        //搜索
+        const input = document.getElementById('searchInput');
+        input.oninput = ()=>{
+            const keyword = input.value.trim().toLowerCase();
+            panels.forEach(p=>p.classList.remove('hide'));
+            tabs.forEach(t=>t.classList.remove('active'));
+            if(!keyword) {
+                tabs[0].click();
+                return;
+            }
+            panels.forEach(p=>{
+                const items = p.querySelectorAll('.business-card');
+                let hasMatch = false;
+                items.forEach(it=>{
+                    const title = it.querySelector('.card-title span').textContent.toLowerCase();
+                    if(title.includes(keyword)){
+                        it.classList.remove('hide');
+                        hasMatch = true;
+                    }else{
+                        it.classList.add('hide');
+                    }
+                })
+                if(!hasMatch) p.classList.add('hide');
+            })
+        }
+        //快捷搜索按钮
+        document.querySelectorAll('.hot-btn').forEach(btn=>{
+            btn.onclick = ()=>{
+                input.value = btn.dataset.key;
+                const evt = new Event('input');
+                input.dispatchEvent(evt);
+            }
+        })
+    </script>
+    </body>
+</html>
